@@ -1,8 +1,5 @@
 const bip39 = require('bip39');
 const { hdkey } = require('ethereumjs-wallet');
-const Ed25519 = require("ed25519-hd-key");
-const TaquitoUtils = require("@taquito/utils");
-const { InMemorySigner } = require("@taquito/signer");
 
 function getETHMaterialFromPath(hdwalletETH, path) {
   const wallet = hdwalletETH.derivePath(path).getWallet()
