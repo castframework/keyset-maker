@@ -10,11 +10,13 @@ async function getXTZMaterialFromPath(seed, path) {
   const [
         privateKey,
         address,
+        publicKey,
       ] = await Promise.all([
         signer.secretKey(),
         signer.publicKeyHash(),
+        signer.publicKey(),
       ]);
-  return {privateKey, address};
+  return {privateKey, address, publicKey};
 }
 
 function tezos_private_key(seed) {
@@ -25,8 +27,16 @@ function tezos_address(seed) {
     return path => getXTZMaterialFromPath(seed, path).then( x => x["address"]);
 }
 
+function tezos_flextesa_material(seed) {
+  return async (path) => {
+    const rawMaterial = await getXTZMaterialFromPath(seed, path)
+    return `${rawMaterial.publicKey},${rawMaterial.address},unencrypted:${rawMaterial.privateKey}`
+  }
+}
+
 module.exports = mnemonic => function (Liquid) {
     const seed = bip39.mnemonicToSeedSync(mnemonic);
     this.registerFilter('tezos_private_key', tezos_private_key(seed));
     this.registerFilter('tezos_address', tezos_address(seed));
+    this.registerFilter('tezos_flextesa_material', tezos_flextesa_material(seed));
 }
