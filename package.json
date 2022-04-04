@@ -1,6 +1,6 @@
 {
   "name": "@castframework/keyset-maker",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Render HD wallet keys and address in templates",
   "main": "./src/cli.js",
   "author": "SOCIETE GENERALE FORGE",
