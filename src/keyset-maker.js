@@ -5,6 +5,8 @@ const { Liquid } = require('liquidjs');
 
 const bip39 = require('bip39');
 
+const initLedger = require('./pluginsLedger/initLedger.js')
+
 let mnemonic;
 if ('MNEMONIC' in process.env) {
   mnemonic = process.env.MNEMONIC;
@@ -51,6 +53,29 @@ async function main(templateDirectory, outputDirectory)  {
   });
 }
 
+
+async function mainLedger(templateDirectory, outputDirectory)  {
+  var normalizedTemplateDirectory = path.normalize(templateDirectory);
+  var engine = new Liquid();
+  const TransportNodeHid = await initLedger();
+  engine.plugin(require('./pluginsLedger/ethereum.js')(TransportNodeHid));
+  engine.plugin(require('./pluginsLedger/tezos.js')(TransportNodeHid));
+
+  const liquidFiles = getAllLiquidFiles(normalizedTemplateDirectory);
+
+  liquidFiles.forEach(filename => {
+    engine.renderFile(filename, {'mnemonic': mnemonic}).then(rendered => {
+      const outputFilename = filename.replace(".liquid", "");
+      if (outputDirectory) {
+        fse.outputFileSync(outputFilename.replace(normalizedTemplateDirectory, outputDirectory+"/"), rendered);
+      } else {
+        fs.writeFileSync(outputFilename, rendered);
+      }
+    });
+  });
+}
+
 module.exports = {
-  main
+  main,
+  mainLedger
 };

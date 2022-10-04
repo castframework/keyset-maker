@@ -1,16 +1,20 @@
 {
   "name": "@castframework/keyset-maker",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Render HD wallet keys and address in templates",
   "main": "./src/cli.js",
   "author": "SOCIETE GENERALE FORGE",
   "license": "SEE LICENSE IN LICENSE",
-  "bin": {  
-    "keyset-maker": "./src/cli.js"  
+  "bin": {
+    "keyset-maker": "./src/cli.js"
   },
   "dependencies": {
+    "@ledgerhq/hw-app-eth": "^6.29.7",
+    "@ledgerhq/hw-app-tezos": "^6.27.5",
+    "@ledgerhq/hw-transport-node-hid": "^6.27.4",
     "@taquito/signer": "^8.1.1",
     "@taquito/utils": "^8.1.1",
+    "async-mutex": "^0.4.0",
     "bip39": "^3.0.3",
     "ed25519-hd-key": "^1.2.0",
     "ethereumjs-wallet": "^1.0.1",

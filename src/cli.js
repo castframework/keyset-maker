@@ -2,18 +2,15 @@
 
 const ksm = require('./keyset-maker');
 
-var argv = require('minimist')(process.argv.slice(2));
+var argv = require('minimist')(process.argv.slice(2), opts={boolean: ["ledger"]});
 
-
-if (argv._.length == 0) {
-    console.log("Usage: keyser-maker templateDirectory [outputDirectory]")
-    process.exit(1);
+if (argv._.length == 0 || argv._["h"] == true) {
+    console.log("Usage: keyser-maker [-h] [--ledger] templateDirectory [outputDirectory]")
+    process.exit(1);h
 }
 
-if (argv._.length == 1) {
-    ksm.main(argv._[0]);
-}
-
-if (argv._.length == 2) {
-    ksm.main(argv._[0], argv._[1]);
+if (argv["ledger"] == true) {
+    argv._.length == 1 ?  ksm.mainLedger(argv._[0]) :  ksm.mainLedger(argv._[0], argv._[1]);
+} else {
+    argv._.length == 1 ?  ksm.main(argv._[0]) :  ksm.main(argv._[0], argv._[1]);
 }
